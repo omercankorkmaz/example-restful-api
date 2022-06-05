@@ -34,5 +34,6 @@ db.once('open', () => {
 });
 
 module.exports = {
-    countryDb
+    db,
+    countryDb,
 }

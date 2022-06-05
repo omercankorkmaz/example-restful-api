@@ -53,3 +53,5 @@ process
     console.error(err, 'Uncaught Exception thrown');
     process.exit(1);
   });
+
+module.exports = app;
