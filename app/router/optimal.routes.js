@@ -1,4 +1,5 @@
 const express = require('express');
+
 const optimalController = require('../controllers/optimal.controller')
 
 const router = express.Router();

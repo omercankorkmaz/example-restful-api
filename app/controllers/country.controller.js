@@ -9,16 +9,26 @@ const find = (req, res, next) => {
     
     // according to `without the region parameter it should return all country documents`
     if (req.query.region) findByQuery(req, res, next) 
-    else findAll(req, res, next) 
+    else findAll(req, res, next)
 
 }
 
 const findAll = async (req, res, next) => {
-    res.send(await countryService.find())
+    try {
+        res.send(await countryService.find());
+    } catch (error) {
+        error = {...error, source: 'country.controller - findAll'}
+        next(error);
+    }
 }
 
 const findByQuery = async (req, res, next) => {
-    res.send(await countryService.find(req.query))
+    try {
+        res.send(await countryService.find(req.query));
+    } catch (error) {
+        error = {...error, source: 'country.controller - findByQuery'}
+        next(error);
+    }
 }
 
 module.exports = {

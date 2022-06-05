@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
-const countryDb = require('./country.db');
 require('dotenv').config();
+
+const countryDb = require('./country.db');
+const BaseError = require('../utils/base-error');
+
 
 const connectionString = `mongodb://${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}`
 
@@ -9,12 +12,21 @@ mongoose.connect(connectionString, {
     pass: process.env.MONGODB_PASSWORD,
     dbName: process.env.MONGODB_DBNAME,
     authSource: 'admin'
-});
+}).then(res => {
+}).catch(error => {
+    throw {
+        message: 'mongodb connection error',
+        ...error,
+    }
+})
 
-var db = mongoose.connection;
+const db = mongoose.connection;
 
 db.on('error', (error) => {
-    console.log(error);
+    throw {
+        message: 'mongodb connection error',
+        ...error,
+    }
 });
 
 db.once('open', () => {

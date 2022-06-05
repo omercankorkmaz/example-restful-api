@@ -1,22 +1,41 @@
 const fetch = require("node-fetch-commonjs");
 
+const { capitalizeFirstLetter } = require('../utils/casing');
+const BaseError = require('../utils/base-error');
+
 const getRoster = async () => {
 
-    const countriesRes = await fetch('http://127.0.0.1:3000/countries/?region=MEA');
-    const countries = await countriesRes.json();
+    const countriesURL = 'http://127.0.0.1:3000/countries';
 
-    console.log(countries);
+    const countriesRes = await fetch(countriesURL);
+    if (countriesRes.status !== 200) {
+        throw new BaseError({
+            statusCode: countriesRes.status,
+            statusText: countriesRes.statusText,
+            message: countriesURL,
+        })
+    }
+
+    const countries = await countriesRes.json();
+    if (!countries || countries.length === 0) {
+        throw new BaseError({
+            statusCode: 404,
+            statusText: 'Not Found',
+            message: 'No countries found',
+        })
+    }
 
     let regionsAndReqs = {};
     countries.forEach(country => { // country: { name: string, region: string }
-        if (!regionsAndReqs[country.region]) {
-            regionsAndReqs[country.region] = { 
+        const Newregionname = capitalizeFirstLetter(country.region)
+        if (!regionsAndReqs[Newregionname]) {
+            regionsAndReqs[Newregionname] = { 
                 countries: [country.name] 
             }
         } else {
-            let countries = [...regionsAndReqs[country.region].countries, country.name];
-            regionsAndReqs[country.region] = {
-                ...regionsAndReqs[country.region],
+            let countries = [...regionsAndReqs[Newregionname].countries, country.name];
+            regionsAndReqs[Newregionname] = {
+                ...regionsAndReqs[Newregionname],
                 countries,
             }
         }
@@ -53,6 +72,7 @@ const getRoster = async () => {
     })
 
     return repsList;
+    
 }
 
 module.exports = {

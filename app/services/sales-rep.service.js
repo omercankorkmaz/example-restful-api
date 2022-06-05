@@ -1,21 +1,42 @@
 const fetch = require("node-fetch-commonjs");
 
+const { capitalizeFirstLetter } = require('../utils/casing');
+const BaseError = require('../utils/base-error');
+
 const getAllRequirements = async () => {
     
-    const countriesRes = await fetch('http://127.0.0.1:3000/countries');
+    const countriesURL = 'http://127.0.0.1:3000/countries';
+
+    const countriesRes = await fetch(countriesURL);
+    if (countriesRes.status !== 200) {
+        throw new BaseError({
+            statusCode: countriesRes.status,
+            statusText: countriesRes.statusText,
+            message: countriesURL,
+        })
+    }
+
     const countries = await countriesRes.json();
+    if (!countries || countries.length === 0) {
+        throw new BaseError({
+            statusCode: 404,
+            statusText: 'Not Found',
+            message: 'No countries found',
+        })
+    }
 
     let regionsAndReqs = {};
     countries.forEach(country => { // country: { name: string, region: string }
-        if (!regionsAndReqs[country.region]) {
-            regionsAndReqs[country.region] = { 
+        const Newregionname = capitalizeFirstLetter(country.region)
+        if (!regionsAndReqs[Newregionname]) {
+            regionsAndReqs[Newregionname] = { 
                 region: country.region, 
                 count: 1, 
             }
         } else {
-            regionsAndReqs[country.region] = {
-                ...regionsAndReqs[country.region],
-                count: regionsAndReqs[country.region].count + 1,
+            regionsAndReqs[Newregionname] = {
+                ...regionsAndReqs[Newregionname],
+                count: regionsAndReqs[Newregionname].count + 1,
             }
         }
     });
@@ -27,6 +48,7 @@ const getAllRequirements = async () => {
     })
 
     return Object.values(regionsAndReqs).map((val) => val);
+
 }
 
 module.exports = {
