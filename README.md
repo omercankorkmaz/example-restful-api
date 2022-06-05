@@ -4,15 +4,15 @@ Used node.js with express.js framework &amp; mongodb for database.
 
 Used .env for db credentials, content of it:
 
-MONGODB_HOST = ****
+  MONGODB_HOST = ****
 
-MONGODB_USERNAME = ****
+  MONGODB_USERNAME = ****
 
-MONGODB_PASSWORD = ****
+  MONGODB_PASSWORD = ****
 
-MONGODB_PORT = ****
-
-MONGODB_DBNAME = ****
+  MONGODB_PORT = ****
+  
+  MONGODB_DBNAME = ****
 
 # Assumptions
 * in country endpoint i'm not allowed to create a method with query that groups records by regions & gets counts of them (to use in sales-rep & optimal endpoints, so i did the needed data manipulations in javascript)
