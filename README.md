@@ -19,4 +19,4 @@ Used .env for db credentials, content of it:
 
 git clone https://github.com/omercankorkmaz/example-restful-api.git
 cd example-restful-api
-
+ 
