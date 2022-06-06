@@ -4,8 +4,9 @@
   "description": "Used node.js with express.js framework &amp; mongodb for database",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
-    "test": "mocha app/test/*.test.js"
+    "start": "node app.js",
+    "start-nodemon": "nodemon app.js",
+    "test": "NODE_ENV=test mocha app/tests/*.test.js"
   },
   "repository": {
     "type": "git",

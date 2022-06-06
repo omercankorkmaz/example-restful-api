@@ -6,7 +6,7 @@ const logErrorMiddleware = (err, req, res, next) => {
 }
   
 const sendErrorMiddleware = (err, req, res, next) => {
-    res.status(err.statusCode).send({ ...err, message: err.message })
+    res.status(err.statusCode).send({ ...err })
 }
 
 module.exports = {

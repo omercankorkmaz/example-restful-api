@@ -17,7 +17,6 @@ const findAll = async (req, res, next) => {
     try {
         res.send(await countryService.find());
     } catch (error) {
-        error = {...error, source: 'country.controller - findAll'}
         next(error);
     }
 }
@@ -26,7 +25,6 @@ const findByQuery = async (req, res, next) => {
     try {
         res.send(await countryService.find(req.query));
     } catch (error) {
-        error = {...error, source: 'country.controller - findByQuery'}
         next(error);
     }
 }

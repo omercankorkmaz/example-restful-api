@@ -1,7 +1,6 @@
 const fetch = require("node-fetch-commonjs");
 
 const { capitalizeFirstLetter } = require('../utils/casing');
-const BaseError = require('../utils/base-error');
 
 const getRoster = async () => {
 
@@ -9,20 +8,22 @@ const getRoster = async () => {
 
     const countriesRes = await fetch(countriesURL);
     if (countriesRes.status !== 200) {
-        throw new BaseError({
+        throw {
             statusCode: countriesRes.status,
             statusText: countriesRes.statusText,
-            message: countriesURL,
-        })
+            desc: countriesURL,
+            source: 'optimal.service - getRoster',
+        }
     }
 
     const countries = await countriesRes.json();
     if (!countries || countries.length === 0) {
-        throw new BaseError({
+        throw {
             statusCode: 404,
             statusText: 'Not Found',
-            message: 'No countries found',
-        })
+            desc: 'No countries found',
+            source: 'optimal.service - getRoster',
+        }
     }
 
     let regionsAndReqs = {};
